@@ -1,0 +1,20 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Adobe files
+*.psd
+*.ai
+*.indd
+*.prproj
+*.aep
+
+# Temporary and cache files
+tmp/
+temp/
+.cache/
