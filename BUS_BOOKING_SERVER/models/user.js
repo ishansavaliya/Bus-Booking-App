@@ -10,6 +10,6 @@ const UserSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-const User = mongoose.Model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export default User;

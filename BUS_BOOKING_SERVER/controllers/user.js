@@ -1,18 +1,17 @@
-import { Jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
-import user from "../models/user.js";
 import User from "../models/user.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
-    { userid: user?._id },
+    { userId: user?._id },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
   );
   const refreshToken = jwt.sign(
-    { userid: user?._id },
+    { userId: user?._id },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
@@ -40,7 +39,7 @@ export const loginOrSignup = async (req, res) => {
 
     let isNewUser = false;
 
-    if (!User) {
+    if (!user) {
       isNewUser = true;
       user = new User({
         google_id,
@@ -51,23 +50,23 @@ export const loginOrSignup = async (req, res) => {
         updatedAt: new Date(),
       });
       await user.save();
-
-      const { accessToken, refreshToken } = generateTokens(user.toObject());
-
-      res.status(200).json({
-        user,
-        accessToken,
-        refreshToken,
-        isNewUser,
-      });
     }
+
+    const { accessToken, refreshToken } = generateTokens(user.toObject());
+
+    res.status(200).json({
+      user,
+      accessToken,
+      refreshToken,
+      isNewUser,
+    });
   } catch (error) {
     console.error("Login error: ", error);
     res.status(500).json({ error: "Failed to authenticate with Google" });
   }
 };
 
-const refreshToken = async (req, res) => {
+export const refreshToken = async (req, res) => {
   const { refreshToken: reqRefreshToken } = req.body;
 
   if (!reqRefreshToken) {
