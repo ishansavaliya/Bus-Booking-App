@@ -6,7 +6,7 @@ export const setAccessToken = (token: string) => {
   storage.set('accessToken', token);
 };
 export const getAccessToken = () => {
-  return storage.getString('accessToken ');
+  return storage.getString('accessToken');
 };
 
 export const removeAccessToken = () => {
