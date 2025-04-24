@@ -66,7 +66,9 @@ const Search = () => {
       );
       return;
     }
-    navigate('BusListScreen', {item: {from, to, date}});
+
+    // Convert Date object to ISO string to make it serializable
+    navigate('BusListScreen', {item: {from, to, date: date.toISOString()}});
   };
 
   return (
@@ -80,9 +82,9 @@ const Search = () => {
             paddingHorizontal: Math.min(16, screenWidth * 0.04),
             paddingVertical: 16,
           }}>
-          <View className="my-3 bg-white rounded-xl shadow-lg overflow-hidden">
+          <View className="my-3 bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gray-300">
             <TouchableOpacity
-              className="p-4 flex-row gap-4 items-center border-b border-gray-200"
+              className="p-4 flex-row gap-4 items-center border-b-2 border-gray-300"
               onPress={() => {
                 setLocationType('from');
                 setShowLocationPicker(true);
@@ -97,7 +99,7 @@ const Search = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              className="p-4 flex-row gap-4 items-center border-b border-gray-200"
+              className="p-4 flex-row gap-4 items-center border-b-2 border-gray-300"
               onPress={() => {
                 setLocationType('to');
                 setShowLocationPicker(true);
