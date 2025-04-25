@@ -14,13 +14,13 @@ const BusSchema = new Schema({
   arrivalTime: { type: Date, required: true },
   duration: { type: String, required: true },
   availableSeats: { type: Number, required: true },
-  price: { type: String, required: true },
+  price: { type: Number, required: true }, // Changed from String to Number
   originalPrice: { type: Number, required: true },
   company: { type: String, required: true },
   busType: { type: String, required: true },
   rating: { type: Number, default: 0 },
   totalReviews: { type: Number, default: 0 },
-  budgets: [{ type: String }],
+  badges: [{ type: String }], // Fixed field name from budgets to badges
   seats: [[SeatSchema]],
 });
 

@@ -10,28 +10,29 @@ export const getBusDetails = async (req, res) => {
     const bus = await Bus.findOne({ busId });
     if (!bus) {
       return res.status(404).json({ error: "Bus not found" });
-
-      res.status(200).json({
-        success: true,
-        data: {
-          busId: bus.busId,
-          from: bus.from,
-          to: bus.to,
-          departureTime: bus.departureTime,
-          arrivalTime: bus.arrivalTime,
-          duration: bus.duration,
-          availableSeats: bus.availableSeats,
-          price: bus.price,
-          originalPrice: bus.originalPrice,
-          company: bus.company,
-          busType: bus.busType,
-          rating: bus.rating,
-          totalReviews: bus.totalReviews,
-          badges: bus.badges,
-          seats: bus.seats,
-        },
-      });
     }
+
+    // This part was inside the if block before, now it's correctly outside
+    return res.status(200).json({
+      success: true,
+      data: {
+        busId: bus.busId,
+        from: bus.from,
+        to: bus.to,
+        departureTime: bus.departureTime,
+        arrivalTime: bus.arrivalTime,
+        duration: bus.duration,
+        availableSeats: bus.availableSeats,
+        price: bus.price,
+        originalPrice: bus.originalPrice,
+        company: bus.company,
+        busType: bus.busType,
+        rating: bus.rating,
+        totalReviews: bus.totalReviews,
+        badges: bus.badges,
+        seats: bus.seats,
+      },
+    });
   } catch (error) {
     console.log("Error fetching bus details: ", error);
     res.status(500).json({ error: "Internal Server Error" });

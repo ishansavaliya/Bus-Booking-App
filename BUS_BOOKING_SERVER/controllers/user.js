@@ -66,6 +66,55 @@ export const loginOrSignup = async (req, res) => {
   }
 };
 
+export const loginWithPhone = async (req, res) => {
+  const { phone } = req.body;
+
+  try {
+    if (!phone || phone.length !== 10) {
+      return res.status(400).json({ error: "Invalid phone number format" });
+    }
+
+    // Check if user exists with this phone number
+    let user = await User.findOne({ phone });
+    let isNewUser = false;
+
+    // If user doesn't exist, create a new user
+    if (!user) {
+      isNewUser = true;
+
+      // Explicitly create a user document with only the required fields
+      // Omitting email entirely rather than setting it to null or undefined
+      const userData = {
+        phone,
+        name: `User-${phone.substring(6)}`, // Default name using last 4 digits
+      };
+
+      try {
+        // Direct create method to avoid any middleware issues
+        user = await User.create(userData);
+        // console.log("New user created successfully with phone:", phone);
+      } catch (createError) {
+        console.error("Error creating user:", createError);
+        return res.status(500).json({ error: "Failed to create user account" });
+      }
+    }
+
+    // Generate tokens for authentication
+    const { accessToken, refreshToken } = generateTokens(user.toObject());
+
+    // Return user data and tokens
+    res.status(200).json({
+      user,
+      accessToken,
+      refreshToken,
+      isNewUser,
+    });
+  } catch (error) {
+    console.error("Phone login error: ", error);
+    res.status(500).json({ error: "Failed to authenticate with phone number" });
+  }
+};
+
 export const refreshToken = async (req, res) => {
   const { refreshToken: reqRefreshToken } = req.body;
 

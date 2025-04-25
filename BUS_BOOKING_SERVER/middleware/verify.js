@@ -12,7 +12,8 @@ const verifyToken = (req, res, next) => {
       return res.status(403).json({ error: "Invalid or Expired token" });
     }
 
-    req.userID = decoded.userID;
+    // Use consistent casing for userId - changed from userID to userId
+    req.userId = decoded.userID || decoded.userId;
     next();
   });
 };

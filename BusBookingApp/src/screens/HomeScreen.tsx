@@ -2,7 +2,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  ScrollView,
   Platform,
   StatusBar,
 } from 'react-native';
@@ -30,15 +29,11 @@ const HomeScreen = () => {
           </View>
         </View>
 
-        <ScrollView
-          className="flex-1"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: Platform.OS === 'ios' ? 40 : 20,
-          }}>
+        {/* Removed ScrollView wrapper to fix nested VirtualizedLists warning */}
+        <View className="flex-1">
           <Search />
           <Bookings />
-        </ScrollView>
+        </View>
       </SafeAreaView>
     </>
   );

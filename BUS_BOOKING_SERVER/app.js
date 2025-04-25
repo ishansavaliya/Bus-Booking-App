@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.js";
 import busRoutes from "./routes/bus.js";
 import ticketRoutes from "./routes/ticket.js";
 import { buildAdminJS } from "./config/setup.js";
+import setupIndexes from "./config/setupIndexes.js";
 
 dotenv.config();
 
@@ -23,14 +24,23 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-//Routes
+// Routes
 app.use("/user", userRoutes);
 app.use("/bus", busRoutes);
 app.use("/ticket", ticketRoutes);
 
+// Debug route to test if server is working
+app.get("/test", (req, res) => {
+  res.status(200).json({ message: "Server is working!" });
+});
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+
+    // Setup MongoDB indexes properly
+    await setupIndexes();
+
     await buildAdminJS(app);
 
     app.listen(PORT, "0.0.0.0", (err) => {

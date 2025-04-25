@@ -15,7 +15,9 @@ const TicketModal: FC<TicketModalProps> = ({visible, onClose, bookingInfo}) => {
       <View
         className="flex-1 justify-center items-center"
         style={{backgroundColor: '#2A2526'}}>
-        <TouchableOpacity className="bg-white mb-5 shadow-sm p-1 rounded-full">
+        <TouchableOpacity
+          onPress={onClose}
+          className="bg-white mb-5 shadow-sm p-1 rounded-full">
           <XMarkIcon color="black" size={22} />
         </TouchableOpacity>
 
@@ -50,7 +52,7 @@ const TicketModal: FC<TicketModalProps> = ({visible, onClose, bookingInfo}) => {
           </View>
 
           <View className="mt-3">
-            <Text className="text-gray-700">Seats</Text>
+            <Text className="text-gray-700">Seats No</Text>
             <Text className="text-gray-500 text-sm">
               {bookingInfo?.seats?.toString()}
             </Text>

@@ -18,6 +18,23 @@ export const loginWithGoogle = async (idToken: string) => {
   return data?.user;
 };
 
+export const loginWithPhone = async (phoneNumber: string) => {
+  try {
+    const {data} = await apiClient.post('/user/login-phone', {phone: phoneNumber});
+    
+    if (data?.accessToken) {
+      setAccessToken(data?.accessToken);
+      setRefreshToken(data?.refreshToken);
+      return data?.user;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Phone login error:', error);
+    throw error;
+  }
+};
+
 export const logout = async () => {
   removeAccessToken();
   removeRefreshToken();

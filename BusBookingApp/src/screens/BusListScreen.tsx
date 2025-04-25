@@ -38,7 +38,14 @@ const BusListScreen = () => {
   const renderItem = ({item}: {item: any}) => (
     <TouchableOpacity
       className="bg-white mb-4 p-4 rounded-lg shadow-lg border-2 border-gray-300"
-      onPress={() => navigate('SeatSelectionScreen', {busId: item?.busId})}>
+      onPress={() =>
+        navigate('SeatSelectionScreen', {
+          busId: item?.busId,
+          from: from,
+          to: to,
+          date: dateString,
+        })
+      }>
       <Image
         source={require('../assets/images/sidebus.png')}
         className="h-6 w-8"

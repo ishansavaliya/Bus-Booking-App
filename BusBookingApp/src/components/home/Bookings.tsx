@@ -5,6 +5,8 @@ import {
   RefreshControl,
   ActivityIndicator,
   FlatList,
+  StyleSheet,
+  Platform,
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {tabs} from '../../utils/dummyData';
@@ -67,8 +69,9 @@ const Bookings = () => {
     );
   }
 
-  return (
-    <View className="pb-16">
+  // Create header component for the FlatList
+  const ListHeaderComponent = () => (
+    <>
       <Text className="text-2xl font-bold mx-4 my-4">Past Bookings</Text>
 
       <View className="flex-row mb-4 mx-4">
@@ -88,15 +91,28 @@ const Bookings = () => {
           </TouchableOpacity>
         ))}
       </View>
+    </>
+  );
 
+  const EmptyComponent = () => (
+    <View className="items-center mt-6">
+      <Text className="text-gray-500">No bookings found.</Text>
+    </View>
+  );
+
+  return (
+    <View className="flex-1">
       {!filteredBookings || filteredBookings.length === 0 ? (
-        <View className="items-center mt-6">
-          <Text className="text-gray-500">No bookings found.</Text>
+        <View>
+          <ListHeaderComponent />
+          <EmptyComponent />
         </View>
       ) : (
         <FlatList
           data={filteredBookings}
           keyExtractor={item => item._id}
+          ListHeaderComponent={ListHeaderComponent}
+          contentContainerStyle={styles.flatListContent}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -106,5 +122,11 @@ const Bookings = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flatListContent: {
+    paddingBottom: Platform.OS === 'ios' ? 120 : 100,
+  },
+});
 
 export default Bookings;
